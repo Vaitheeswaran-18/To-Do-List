@@ -1,0 +1,83 @@
+from mininet.topo import Topo
+from mininet.net import Mininet
+from mininet.cli import CLI
+from mininet.node import OVSSwitch
+from mininet.log import setLogLevel
+
+class MeshTopo(Topo):
+    def build(self):
+        # Create one switch
+        s1 = self.addSwitch('s1')
+
+        # Create hosts
+        h1 = self.addHost('h1')
+        h2 = self.addHost('h2')
+        h3 = self.addHost('h3')
+
+        # Fully mesh them by connecting all to same switch
+        self.addLink(h1, s1)
+        self.addLink(h2, s1)
+        self.addLink(h3, s1)
+
+def run():
+    topo = MeshTopo()
+    net = Mininet(topo=topo, switch=OVSSwitch, controller=None)
+    net.start()
+    CLI(net)
+    net.stop()
+
+if _name_ == '_main_':
+    setLogLevel('info')
+    run()
+
+
+
+-----------------------------------------
+
+network commands
+
+ip a
+ping google.com
+traceroute google.com
+ip route
+dig youtube.com
+sudo tcpdump -i eth0
+nmcli device
+sudo ethtool eth0
+curl https://example.com
+
+arp -a   (arp – Show MAC address table)
+-----------------------------------------------
+
+iperf3 -s
+iperf3 -c <server-ip>
+iperf3 -c <server-ip> -R
+iperf3 -c <server-ip> -t 20
+iperf3 -c <server-ip> -P 5
+iperf3 -c <server-ip> -u -b 100M
+iperf3 -c <server-ip> --bidir
+iperf3 -v
+
+============================
+
+ping and trace out 
+ping google.com
+ping 8.8.8.8
+ping -c 5 google.com
+ping -q google.com(Show summary only (quiet mode))
+TRACE OUT
+traceroute google.com
+traceroute -m 10 google.com
+
+  CURL AND TRACEOUT
+
+curl https://example.com(Show webpage content)
+curl -O https://example.com(Download a file) 
+curl -i ifcongif.co
+
+WHOIS COMMAND
+
+whois google.com
+whois 8.8.8.8
+whois 103.56.23.45
+=============================================
