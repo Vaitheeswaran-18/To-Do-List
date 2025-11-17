@@ -1,0 +1,101 @@
+port 
+
+
+import socket
+
+ip = "127.0.0.1"
+start, end = 70, 90
+
+for port in range(start, end + 1):
+    s = socket.socket()
+    s.settimeout(0.5)
+    try:
+        s.connect((ip, port))
+        print(port, "OPEN")
+    except:
+        print(port, "CLOSED")
+    s.close()
+
+_________________________________
+user loging 
+
+from datetime import datetime
+
+file = open("input_log.txt", "a")
+
+while True:
+    cmd = input("Enter command: ")
+    if cmd == "exit":
+        break
+    file.write(f"{datetime.now()} - {cmd}\n")
+
+file.close()
+
+
+______________________________________
+
+sql_velnurablity
+
+import requests
+
+def sql_injection_url(url,param):
+    payload=f"{url}?{param}='OR 1=1--"
+    response=requests.get(payload)
+    if "error" in response.text or "syntax" in response.text:
+        print(f"potential vulnerablilities:{payload}")
+        
+    else:
+        print(f"seems safe:{url}")
+
+
+sql_injection_url("https://chatgpt.com/c/691b3b84-f3f0-8322-94d6-572bc66d8232","login")
+
+___________________________________________
+
+otp login 
+
+import time
+secret_key =123456
+
+def generate_otp():
+    return str((int(time.time())+secret_key)%1000000).zfill(6)
+
+password=input("Enter password: ")
+if password=="1234":
+    otp=generate_otp()
+    print(f"The otp is {otp}")
+    get_otp=input("Enter otp:")
+    if otp==get_otp:
+        print("Authenticate successfully")
+
+    else:
+        print("Wrong otp")
+else:
+    print("Wrong password")
+
+______________________________________
+
+
+encryption chiper text
+
+def casear_de(messege,shift,mode='encrpt'):
+    result=""
+    for char in messege:
+        
+        shift_base = 65 if char.isupper() else 97
+        shift_value = shift if mode == 'encrpt' else -shift
+        result+=chr((ord(char)-shift_base+shift_value)%26+shift_base)
+
+    else:
+        result+=char
+
+    return result
+
+messege = input("Enter the password: ")
+shift = int(input("Enter the value: "))
+encryption = casear_de(messege,shift,mode='encrpt')
+print(f"Encrypt messege:{encryption}")
+decryption = casear_de(messege,shift,mode='decrpt')
+print(f"decrypt messege:{decryption}")
+
+________________________________________________
