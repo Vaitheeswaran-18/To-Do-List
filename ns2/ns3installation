@@ -1,0 +1,53 @@
+This post will tell you how to install NS-2.35 in Linux Mint 17.1 64-bit operating system.
+
+NS-2 is a discrete event simulator targeted at networking research. NS-2 provides substantial support for simulation of TCP, routing, and multicast protocols over wired and wireless (local and satellite) networks.
+
+Step 1 : Download NS-2.35 from here(https://sourceforge.net/projects/nsnam/)
+
+Step 2 : Copy the downloaded file from the Download folder to your home directory /home/nabin folder ( in my case )
+
+Step 3 : Open your Terminal and execute these commands one by one
+
+sudo apt-get update
+
+sudo apt-get install build-essential automake autoconf libxmu-dev
+
+Step 4 : Untar ns-allinone-2.35.tar.gz using the command below
+
+tar zxvf ns-allinone-2.35.tar.gz
+
+Step 5 : Once the file is unzipped, here you need to make a small change in the source file . Go to the folder ns-2.35/linkstate/ and open ls.h using any editor ( gedit or nano or vi). Now go to line number 137 and make the following changes
+
+Just add this->; before erase
+
+void eraseAll() { this->;erase(baseMap::begin(), baseMap::end()); }
+
+Once this is done save your ls.h file and close the editor
+
+Now you can install NS-2.35 in your system
+
+Step 6 : Go inside ns-allinone-2.35 by using the command cd ns-allinone-2.35 from your terminal and enter the command ./install
+
+Step 7 : As I am using Linux Mint, I need to paste the path in .profile file. Open .profile by entering the following command from your terminal
+
+gedit .profile
+
+Once the file is opened, you need to paste your path
+
+export PATH=$PATH:/home/nabin/ns-allinone-2.35/bin:/home/nabin/ns-allinone-2.35/tcl8.5.10/unix:/home/nabin/ns-allinone-2.35/tk8.5.10/unix
+
+Now save your file and close it
+
+From your terminal run the following command to save your changes in the file
+
+source .profile
+
+The installation is over, now you need to check whether NS2 is working or not. Inorder to check type the following commands in your terminal
+
+================================================================================================================
+
+to open it command is 
+java -jar NSG22.1.jar
+
+choosw wired or wirless and cereatre a requored nopde 
+choose tcp for the source and tcp sink for the destination  
