@@ -1,34 +1,41 @@
-from mininet.topo import Topo
-from mininet.net import Mininet
-from mininet.cli import CLI
-from mininet.node import OVSSwitch
-from mininet.log import setLogLevel
+# Simple Mesh Topology in NS2
 
-class MeshTopo(Topo):
-    def build(self):
-        # Create one switch
-        s1 = self.addSwitch('s1')
+set ns [new Simulator]
 
-        # Create hosts
-        h1 = self.addHost('h1')
-        h2 = self.addHost('h2')
-        h3 = self.addHost('h3')
+# Trace & NAM files
+set tf [open out.tr w]
+$ns trace-all $tf
+set nf [open out.nam w]
+$ns namtrace-all $nf
 
-        # Fully mesh them by connecting all to same switch
-        self.addLink(h1, s1)
-        self.addLink(h2, s1)
-        self.addLink(h3, s1)
+# Number of mesh nodes
+set N 6
 
-def run():
-    topo = MeshTopo()
-    net = Mininet(topo=topo, switch=OVSSwitch, controller=None)
-    net.start()
-    CLI(net)
-    net.stop()
+# Create nodes
+for {set i 0} {$i < $N} {incr i} {
+    set n($i) [$ns node]
+}
 
-if _name_ == '_main_':
-    setLogLevel('info')
-    run()
+# Full mesh linking
+for {set i 0} {$i < $N} {incr i} {
+    for {set j [expr $i+1]} {$j < $N} {incr j} {
+        $ns duplex-link $n($i) $n($j) 1Mb 10ms DropTail
+    }
+}
+
+# End simulation
+$ns at 5.0 "finish"
+
+proc finish {} {
+    global ns tf nf
+    $ns flush-trace
+    close $tf
+    close $nf
+    exec nam out.nam &
+    exit 0
+}
+
+$ns run
 
 
 
