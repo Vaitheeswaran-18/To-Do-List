@@ -54,24 +54,22 @@ ___________________________________________
 
 otp login 
 
-import time
-secret_key =123456
 
-def generate_otp():
-    return str((int(time.time())+secret_key)%1000000).zfill(6)
+import random
 
-password=input("Enter password: ")
-if password=="1234":
-    otp=generate_otp()
-    print(f"The otp is {otp}")
-    get_otp=input("Enter otp:")
-    if otp==get_otp:
-        print("Authenticate successfully")
+password = "admin123"
+otp = str(random.randint(1000, 9999))
 
-    else:
-        print("Wrong otp")
+print("Your OTP is:", otp)
+
+user_pass = input("Enter password: ")
+user_otp = input("Enter OTP: ")
+
+if user_pass == password and user_otp == otp:
+    print("Login Successful")
 else:
-    print("Wrong password")
+    print("Login Failed")
+  
 
 ______________________________________
 
